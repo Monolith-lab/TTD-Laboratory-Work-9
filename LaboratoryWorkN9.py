@@ -56,6 +56,7 @@ def calculate_results():
 
             min_diff = float('inf')
             best_i = None
+            best_first = None # To store the 'first' value for the best_i
 
             i = start_i
             while i < end_i:
@@ -67,6 +68,7 @@ def calculate_results():
                     if current_diff < min_diff:
                         min_diff = current_diff
                         best_i = i
+                        best_first = first # Store the 'first' value when a better 'i' is found
                 except ValueError as e_coolprop:
                     messagebox.showerror("Ошибка CoolProp", f"Ошибка CoolProp при i={i}: {e_coolprop}")
                     output_text.config(state=tk.DISABLED)
@@ -79,6 +81,7 @@ def calculate_results():
             if best_i is not None:
                 result_str += f"  Наименьшая абсолютная разница: {min_diff:.6f}\n"
                 result_str += f"  Значение T, К, при котором достигается наименьшая разница: {best_i}\n" # Changed "i" to "T, К"
+                result_str += f"  Скорость потока: {best_first:.6f} м/с\n" # Added velocity output with unit, removed (first)
             else:
                 result_str += "  Не удалось найти значение i в заданном диапазоне.\n"
             output_text.insert(tk.END, result_str)
@@ -161,7 +164,7 @@ output_text.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 output_text.config(state=tk.DISABLED)
 
 # --- Справка ---
-help_label = ttk.Label(output_frame, text="Справка:\nЧтобы умножить на 10 в степени X, используйте формат eX, где X - степень десяти.\nВставка чисел осуществляется только при включённой английской раскладке.\nАвтор программы - Маркин Михаил Ашотович, данное ПО распространяется под лицензией GNU GPL V3", justify=tk.LEFT)
+help_label = ttk.Label(output_frame, text="Справка:\nЧтобы умножить на 10 в степени X, используйте формат eX, где X - степень десяти.\nВставка чисел осуществляется только при включённой английской раскладке.\nАвтор программы - Маркин Михаил Ашотович, ссылка на github: https://github.com/Monolith-lab/LaboratoryWork-9, данное ПО распространяется под лицензией GNU GPL V3", justify=tk.LEFT)
 help_label.grid(row=2, column=0, sticky=tk.W)
 
 root.columnconfigure(0, weight=1)
